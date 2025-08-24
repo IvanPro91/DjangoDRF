@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from lms.models import Lesson, Course
+from lms.models import Course, Lesson
 
 
 class User(AbstractUser):
@@ -20,28 +20,12 @@ class User(AbstractUser):
 
     username = None
 
-    email = models.EmailField(
-        unique=True,
-        verbose_name="Почта",
-        help_text="Введите почту",
-        blank=False,
-        null=False
-    )
-    phone = models.CharField(
-        max_length=15,
-        verbose_name="Телефон",
-        help_text="Введите номер телефона"
-    )
-    city = models.CharField(
-        max_length=50,
-        verbose_name="Город"
-    )
-    avatar = models.ImageField(
-        upload_to="users/avatar",
-        verbose_name="Аватар"
-    )
+    email = models.EmailField(unique=True, verbose_name="Почта", help_text="Введите почту", blank=False, null=False)
+    phone = models.CharField(max_length=15, verbose_name="Телефон", help_text="Введите номер телефона")
+    city = models.CharField(max_length=50, verbose_name="Город")
+    avatar = models.ImageField(upload_to="users/avatar", verbose_name="Аватар")
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     class Meta:
@@ -49,6 +33,7 @@ class User(AbstractUser):
         Определяет человекочитаемое имя модели и его множественную форму
         для отображения в интерфейсе администратора.
         """
+
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
 
@@ -77,32 +62,11 @@ class Pay(models.Model):
         (TYPE_TRANSFER_ACCOUNT, "Перевод на счет"),
     ]
 
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        verbose_name="Пользователь",
-        null=True
-    )
-    date_pay = models.DateField(
-        auto_now=True,
-        verbose_name="Дата оплаты"
-    )
-    lesson = models.ForeignKey(
-        Lesson,
-        on_delete=models.CASCADE,
-        verbose_name="Оплаченный урок",
-        null=True
-    )
-    course = models.ForeignKey(
-        Course,
-        on_delete=models.CASCADE,
-        verbose_name="Оплаченный курс",
-        null=True
-    )
-    money = models.PositiveIntegerField(
-        default=0,
-        verbose_name="Сумма оплаты"
-    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь", null=True)
+    date_pay = models.DateTimeField(auto_now=True, verbose_name="Дата оплаты")
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name="Оплаченный урок", null=True, blank=True)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="Оплаченный курс", null=True, blank=True)
+    money = models.PositiveIntegerField(default=0, verbose_name="Сумма оплаты")
     type_pay = models.CharField(
         max_length=20,
         choices=STATUS_CHOICES,
@@ -114,6 +78,7 @@ class Pay(models.Model):
         Определяет человекочитаемое имя модели и его множественную форму
         для отображения в интерфейсе администратора.
         """
+
         verbose_name = "Платеж"
         verbose_name_plural = "Платежи"
 

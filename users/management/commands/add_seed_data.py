@@ -1,7 +1,7 @@
 from django.core.management import BaseCommand
 
-from lms.models import Lesson, Course
-from users.models import User, Pay
+from lms.models import Course, Lesson
+from users.models import Pay, User
 
 
 class Command(BaseCommand):
@@ -47,11 +47,5 @@ class Command(BaseCommand):
                 user.save()
 
                 if not data_user["is_superuser"]:
-                    Pay.objects.create(
-                        user = user,
-                        lesson = lesson,
-                        course = course,
-                        money = 11232,
-                        type_pay = Pay.TYPE_CASH
-                    )
+                    Pay.objects.create(user=user, lesson=lesson, course=course, money=11232, type_pay=Pay.TYPE_CASH)
         self.stdout.write(self.style.SUCCESS("Засеивание выполнено успешно"))

@@ -13,22 +13,13 @@ class Course(models.Model):
     description (TextField): Описание курса. Может содержать подробную информацию.
     """
 
-    name = models.CharField(
-        max_length=100,
-        verbose_name="Название",
-        blank=False,
-        null=False
-    )
-    preview = models.ImageField(
-        upload_to='course/',
-        verbose_name="Картинка"
-    )
-    description = models.TextField(
-        verbose_name="Описание"
-    )
+    name = models.CharField(max_length=100, verbose_name="Название", blank=False, null=False)
+    preview = models.ImageField(upload_to="course/", verbose_name="Картинка")
+    description = models.TextField(verbose_name="Описание")
 
     class Meta:
         """Определяет человекочитаемое имя модели и его множественную форму"""
+
         verbose_name = "Курс"
         verbose_name_plural = "Курсы"
 
@@ -51,32 +42,15 @@ class Lesson(models.Model):
     course (ForeignKey): Ссылка на курс, к которому относится урок.
     """
 
-    name = models.CharField(
-        max_length=100,
-        verbose_name="Название",
-        blank=False,
-        null=False
-    )
-    preview = models.ImageField(
-        upload_to='lesson/',
-        verbose_name="Картинка"
-    )
-    description = models.TextField(
-        verbose_name="Описание"
-    )
-    video_url = models.TextField(
-        verbose_name="Ссылка на видео"
-    )
-    course = models.ForeignKey(
-        Course,
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True,
-        verbose_name="Курс"
-    )
+    name = models.CharField(max_length=100, verbose_name="Название", blank=False, null=False)
+    preview = models.ImageField(upload_to="lesson/", verbose_name="Картинка")
+    description = models.TextField(verbose_name="Описание")
+    video_url = models.TextField(verbose_name="Ссылка на видео")
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Курс")
 
     class Meta:
         """Определяет человекочитаемое имя модели и его множественную форму"""
+
         verbose_name = "Урок"
         verbose_name_plural = "Уроки"
 

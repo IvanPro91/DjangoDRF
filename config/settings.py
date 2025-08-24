@@ -9,10 +9,11 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+
 import os
 from pathlib import Path
 
-from django.conf.global_settings import MEDIA_URL, AUTH_USER_MODEL
+from django.conf.global_settings import AUTH_USER_MODEL, MEDIA_URL
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -24,8 +25,7 @@ SECRET_KEY = os.getenv("ENV_SECRET_KEY")
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-
+ALLOWED_HOSTS = ["*"]
 
 
 INSTALLED_APPS = [
@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "users",
     "lms",
-    'django_filters',
+    "django_filters",
 ]
 
 MIDDLEWARE = [
@@ -108,7 +108,7 @@ USE_I18N = True
 USE_TZ = True
 
 MEDIA_URL = "media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 STATIC_URL = "static/"
 
