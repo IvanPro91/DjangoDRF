@@ -29,7 +29,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
     def get_lessons_count(self, obj):
         """Возвращает количество уроков, связанных с курсом."""
-        return obj.lessons.count()
+        return obj.payments.count()
 
     class Meta:
         model = Course
