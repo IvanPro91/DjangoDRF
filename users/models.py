@@ -64,8 +64,10 @@ class Pay(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь", null=True)
     date_pay = models.DateTimeField(auto_now=True, verbose_name="Дата оплаты")
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name="Оплаченный урок", null=True, blank=True)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="Оплаченный курс", null=True, blank=True)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="payments",
+                               verbose_name="Оплаченный урок", null=True, blank=True)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="payments",
+                               verbose_name="Оплаченный курс", null=True, blank=True)
     money = models.PositiveIntegerField(default=0, verbose_name="Сумма оплаты")
     type_pay = models.CharField(
         max_length=20,
