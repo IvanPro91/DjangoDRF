@@ -50,10 +50,13 @@ class LessonsViewSet(viewsets.ModelViewSet):
         lesson.save()
 
     def get_permissions(self):
-        if self.action in ['create', 'retrieve']:
+        if self.action == 'create':
             self.permission_classes = (~ModeratorPermissions,)
-        elif self.action in ['update', 'destroy']:
-            self.permission_classes = (ModeratorPermissions,)
+        elif self.action in ['update', 'retrieve']:
+            self.permission_classes = (ModeratorPermissions | IsOwner)
+        elif self.action == 'destroy':
+            self.permission_classes = (~ModeratorPermissions, IsOwner)
         elif self.action in ['update', 'destroy']:
             self.permission_classes = (ModeratorPermissions,)
         return super().get_permissions()
+
