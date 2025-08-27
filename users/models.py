@@ -87,3 +87,19 @@ class Pay(models.Model):
     def __str__(self):
         """Возвращает строковое представление объекта Pay."""
         return f"Платеж от {self.user.email} на сумму {self.money} руб."
+
+class SubscribeUser(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="Подписка на курс")
+
+    class Meta:
+        """
+        Определяет человекочитаемое имя модели и его множественную форму
+        для отображения в интерфейсе администратора.
+        """
+        verbose_name = "Подписка"
+        verbose_name_plural = "Подписки"
+
+    def __str__(self):
+        """Возвращает строковое представление объекта SubscribeUser."""
+        return f"{self.user.name} -> подписка на {self.course.name}"
