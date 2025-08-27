@@ -1,5 +1,6 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters
+from rest_framework.permissions import IsAuthenticated
 
 from lms.models import Course, Lesson
 from lms.serializers import CourseSerializer, LessonSerializer
@@ -13,9 +14,14 @@ class CoursesViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     ordering_fields = ["name"]
     ordering = ["-name"]
+    serializer_class = CourseSerializer
 
-    def get_serializer_class(self):
-        return CourseSerializer
+    def get_queryset(self):
+        qs = super().get_queryset()
+        user = self.request.user
+        if user.groups.filter(name='moders').exists():
+            return qs
+        return qs.filter(owner=user)
 
     def perform_create(self, serializer):
         course = serializer.save()
@@ -24,13 +30,11 @@ class CoursesViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action == 'create':
-            self.permission_classes = (~ModeratorPermissions,)
-        elif self.action in ['update', 'retrieve']:
-            self.permission_classes = (ModeratorPermissions | IsOwner)
+            self.permission_classes = (IsAuthenticated, ~ModeratorPermissions,)
+        elif self.action in ['update', 'partial_update', 'retrieve']:
+            self.permission_classes = (IsAuthenticated, ModeratorPermissions | IsOwner,)
         elif self.action == 'destroy':
-            self.permission_classes = (~ModeratorPermissions, IsOwner)
-        elif self.action in ['update', 'destroy']:
-            self.permission_classes = (ModeratorPermissions,)
+            self.permission_classes = (IsAuthenticated, IsOwner,)
         return super().get_permissions()
 
 class LessonsViewSet(viewsets.ModelViewSet):
@@ -40,9 +44,14 @@ class LessonsViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     ordering_fields = ["name"]
     ordering = ["-name"]
+    serializer_class = LessonSerializer
 
-    def get_serializer_class(self):
-        return LessonSerializer
+    def get_queryset(self):
+        qs = super().get_queryset()
+        user = self.request.user
+        if user.groups.filter(name='moders').exists():
+            return qs
+        return qs.filter(owner=user)
 
     def perform_create(self, serializer):
         lesson = serializer.save()
@@ -51,12 +60,10 @@ class LessonsViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action == 'create':
-            self.permission_classes = (~ModeratorPermissions,)
-        elif self.action in ['update', 'retrieve']:
-            self.permission_classes = (ModeratorPermissions | IsOwner)
+            self.permission_classes = (IsAuthenticated, ~ModeratorPermissions,)
+        elif self.action in ['update', 'partial_update', 'retrieve']:
+            self.permission_classes = (IsAuthenticated, ModeratorPermissions | IsOwner,)
         elif self.action == 'destroy':
-            self.permission_classes = (~ModeratorPermissions, IsOwner)
-        elif self.action in ['update', 'destroy']:
-            self.permission_classes = (ModeratorPermissions,)
+            self.permission_classes = (IsAuthenticated, IsOwner,)
         return super().get_permissions()
 
