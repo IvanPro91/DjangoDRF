@@ -9,6 +9,7 @@ from lms.models import Course
 from users.filters import PayFilter
 from users.models import Pay, User, SubscribeUser
 from users.serializers import PaySerializer, UserCreateSerializer, UserDetailViewSerializer, UserViewSerializer
+from users.services import create_stripe_price_amount, create_stripe_session
 
 
 def user_subscribe_course(request: Request):
@@ -36,6 +37,19 @@ class UserCreateAPIView(CreateAPIView):
         user = serializer.save(is_active = True)
         user.set_password(user.password)
         user.save()
+
+class CreateProductPrice(CreateAPIView):
+    serializer_class = PaySerializer
+    queryset = Pay.objects.all()
+
+    def perform_create(self, serializer):
+        pay = serializer.save(user = self.request.user)
+        price = create_stripe_price_amount(pay.name_product, pay.amount)
+        session_id, session_link = create_stripe_session(price)
+        pay.session_id = session_id
+        pay.link = session_link
+        pay.save()
+        # super().perform_create(serializer)
 
 
 class PayViewSet(viewsets.ReadOnlyModelViewSet):

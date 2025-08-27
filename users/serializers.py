@@ -22,7 +22,11 @@ class PaySerializer(serializers.ModelSerializer):
     user_email = serializers.EmailField(source="user.email", read_only=True)
     course_name = serializers.CharField(source="course.name", read_only=True, allow_null=True)
     lesson_name = serializers.CharField(source="lesson.name", read_only=True, allow_null=True)
+    name_product = serializers.CharField(read_only=True)
+    amount = serializers.IntegerField(read_only=True)
+
 
     class Meta:
         model = Pay
-        fields = ["id", "user_email", "date_pay", "course_name", "lesson_name", "money", "type_pay"]
+        fields = ["id", "name_product", "amount", "user_email", "date_pay",
+                  "course_name", "lesson_name", "money", "type_pay"]
