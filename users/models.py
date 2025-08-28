@@ -64,6 +64,8 @@ class Pay(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь", null=True)
     date_pay = models.DateTimeField(auto_now=True, verbose_name="Дата оплаты")
+    session_id = models.TextField(verbose_name="ИД сессии", null=True, blank=True)
+    link = models.TextField(verbose_name="Ссылка на оплату", null=True, blank=True)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="payments",
                                verbose_name="Оплаченный урок", null=True, blank=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="payments",

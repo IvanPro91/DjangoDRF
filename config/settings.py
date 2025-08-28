@@ -22,6 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRET_KEY = os.getenv("ENV_SECRET_KEY")
+PUBLIC_API_KEY_STRIPE = os.getenv("PUBLIC_API_KEY_STRIPE")
 
 DEBUG = True
 
@@ -40,7 +41,7 @@ INSTALLED_APPS = [
     "users",
     "lms",
     "django_filters",
-
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -127,6 +128,8 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
 }
+
+
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),

@@ -19,6 +19,8 @@ black = "^25.1.0"
 mypy = "^1.17.1"
 djangorestframework-simplejwt = "^5.5.1"
 requests = "^2.32.5"
+drf-yasg = "^1.21.10"
+stripe = "^12.4.0"
 
 [build-system]
 requires = ["poetry-core"]
