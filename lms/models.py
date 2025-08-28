@@ -45,9 +45,9 @@ class Lesson(models.Model):
     """
 
     name = models.CharField(max_length=100, verbose_name="Название", blank=False, null=False)
-    preview = models.ImageField(upload_to="lesson/", verbose_name="Картинка")
-    description = models.TextField(verbose_name="Описание")
-    video_url = models.TextField(verbose_name="Ссылка на видео")
+    preview = models.ImageField(upload_to="lesson/", verbose_name="Картинка", blank=True, null=True)
+    description = models.TextField(verbose_name="Описание", blank=True, null=True)
+    video_url = models.TextField(verbose_name="Ссылка на видео", blank=True, null=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Курс")
     owner = models.ForeignKey('users.User', on_delete=models.SET_NULL, blank=True, null=True)
 

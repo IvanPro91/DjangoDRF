@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from lms.models import Course, Lesson
+from lms.validators import validation_url
 
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -8,6 +9,7 @@ class LessonSerializer(serializers.ModelSerializer):
     Сериализатор для модели Урока (Lesson).
     Используется как вложенный сериализатор в CourseSerializer.
     """
+    video_url = serializers.CharField(validators=[validation_url])
 
     class Meta:
         model = Lesson
