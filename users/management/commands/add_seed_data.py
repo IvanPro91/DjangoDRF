@@ -1,7 +1,8 @@
 import random
 from datetime import datetime, timedelta
-from django.core.management import BaseCommand
+
 from django.contrib.auth import get_user_model
+from django.core.management import BaseCommand
 from django.utils import timezone
 
 from lms.models import Course, Lesson
@@ -67,7 +68,8 @@ class Command(BaseCommand):
             fname = random.choice(first_names)
             lname = random.choice(last_names)
             domain = random.choice(domains)
-            email = f"{fname.lower()}.{lname.lower()}{i+1}@{domain}"
+            i += 1
+            email = f"{fname.lower()}.{lname.lower()}{i}@{domain}"
 
             user = User.objects.create(
                 email=email,
@@ -97,10 +99,7 @@ class Command(BaseCommand):
 
         courses = []
         for name in course_names:
-            course = Course.objects.create(
-                name=name,
-                description=f"Полное описание курса: {name}"
-            )
+            course = Course.objects.create(name=name, description=f"Полное описание курса: {name}")
             courses.append(course)
             self.stdout.write(f"Курс создан: {course.name}")
 
@@ -126,10 +125,9 @@ class Command(BaseCommand):
             num_lessons = random.randint(3, 6)
             for i in range(num_lessons):
                 topic = random.choice(lesson_topics)
+                i += 1
                 lesson = Lesson(
-                    name=f"Урок {i+1}: {topic}",
-                    description=f"Подробное изучение темы: {topic}",
-                    course=course
+                    name=f"Урок {i}: {topic}", description=f"Подробное изучение темы: {topic}", course=course
                 )
                 lessons.append(lesson)
 
@@ -182,6 +180,4 @@ class Command(BaseCommand):
         self.stdout.write(f"Создано платежей: {len(pays)}\n")
 
         # --- Финал ---
-        self.stdout.write(
-            self.style.SUCCESS("Засеивание базы данных завершено успешно!")
-        )
+        self.stdout.write(self.style.SUCCESS("Засеивание базы данных завершено успешно!"))

@@ -66,10 +66,22 @@ class Pay(models.Model):
     date_pay = models.DateTimeField(auto_now=True, verbose_name="Дата оплаты")
     session_id = models.TextField(verbose_name="ИД сессии", null=True, blank=True)
     link = models.TextField(verbose_name="Ссылка на оплату", null=True, blank=True)
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="payments",
-                               verbose_name="Оплаченный урок", null=True, blank=True)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="payments",
-                               verbose_name="Оплаченный курс", null=True, blank=True)
+    lesson = models.ForeignKey(
+        Lesson,
+        on_delete=models.CASCADE,
+        related_name="payments",
+        verbose_name="Оплаченный урок",
+        null=True,
+        blank=True,
+    )
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        related_name="payments",
+        verbose_name="Оплаченный курс",
+        null=True,
+        blank=True,
+    )
     money = models.PositiveIntegerField(default=0, verbose_name="Сумма оплаты")
     type_pay = models.CharField(
         max_length=20,
@@ -90,6 +102,7 @@ class Pay(models.Model):
         """Возвращает строковое представление объекта Pay."""
         return f"Платеж от {self.user.email} на сумму {self.money} руб."
 
+
 class SubscribeUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="Подписка на курс")
@@ -99,6 +112,7 @@ class SubscribeUser(models.Model):
         Определяет человекочитаемое имя модели и его множественную форму
         для отображения в интерфейсе администратора.
         """
+
         verbose_name = "Подписка"
         verbose_name_plural = "Подписки"
 
