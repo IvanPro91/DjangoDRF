@@ -2,10 +2,12 @@ from rest_framework import serializers
 
 from users.models import Pay, User
 
+
 class UserDetailViewSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["email", "password", "last_name", "first_name"]
+
 
 class UserViewSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,6 +20,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
         model = User
         fields = ["email", "password"]
 
+
 class PaySerializer(serializers.ModelSerializer):
     user_email = serializers.EmailField(source="user.email", read_only=True)
     course_name = serializers.CharField(source="course.name", read_only=True, allow_null=True)
@@ -25,8 +28,16 @@ class PaySerializer(serializers.ModelSerializer):
     name_product = serializers.CharField(read_only=True)
     amount = serializers.IntegerField(read_only=True)
 
-
     class Meta:
         model = Pay
-        fields = ["id", "name_product", "amount", "user_email", "date_pay",
-                  "course_name", "lesson_name", "money", "type_pay"]
+        fields = [
+            "id",
+            "name_product",
+            "amount",
+            "user_email",
+            "date_pay",
+            "course_name",
+            "lesson_name",
+            "money",
+            "type_pay",
+        ]

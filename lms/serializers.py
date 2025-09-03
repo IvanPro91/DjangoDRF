@@ -9,6 +9,7 @@ class LessonSerializer(serializers.ModelSerializer):
     Сериализатор для модели Урока (Lesson).
     Используется как вложенный сериализатор в CourseSerializer.
     """
+
     video_url = serializers.CharField(validators=[validation_url])
 
     class Meta:

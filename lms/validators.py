@@ -1,6 +1,7 @@
 from rest_framework.exceptions import ValidationError
 
-valid_url = 'youtube.com'
+valid_url = "youtube.com"
+
 
 def validation_url(value: str):
     if valid_url not in value:

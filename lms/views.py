@@ -1,11 +1,11 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, filters
+from rest_framework import filters, viewsets
 from rest_framework.permissions import IsAuthenticated
 
 from lms.models import Course, Lesson
 from lms.paginations import CustomPagination
 from lms.serializers import CourseSerializer, LessonSerializer
-from users.permissions import ModeratorPermissions, IsOwner
+from users.permissions import IsOwner, ModeratorPermissions
 
 
 class CoursesViewSet(viewsets.ModelViewSet):
@@ -21,7 +21,7 @@ class CoursesViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         qs = super().get_queryset()
         user = self.request.user
-        if user.groups.filter(name='moders').exists():
+        if user.groups.filter(name="moders").exists():
             return qs
         return qs.filter(owner=user)
 
@@ -31,13 +31,23 @@ class CoursesViewSet(viewsets.ModelViewSet):
         course.save()
 
     def get_permissions(self):
-        if self.action == 'create':
-            self.permission_classes = (IsAuthenticated, ~ModeratorPermissions,)
-        elif self.action in ['update', 'partial_update', 'retrieve']:
-            self.permission_classes = (IsAuthenticated, ModeratorPermissions | IsOwner,)
-        elif self.action == 'destroy':
-            self.permission_classes = (IsAuthenticated, IsOwner,)
+        if self.action == "create":
+            self.permission_classes = (
+                IsAuthenticated,
+                ~ModeratorPermissions,
+            )
+        elif self.action in ["update", "partial_update", "retrieve"]:
+            self.permission_classes = (
+                IsAuthenticated,
+                ModeratorPermissions | IsOwner,
+            )
+        elif self.action == "destroy":
+            self.permission_classes = (
+                IsAuthenticated,
+                IsOwner,
+            )
         return super().get_permissions()
+
 
 class LessonsViewSet(viewsets.ModelViewSet):
     """Контролер отображения фильтрации и сортировки"""
@@ -52,7 +62,7 @@ class LessonsViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         qs = super().get_queryset()
         user = self.request.user
-        if user.groups.filter(name='moders').exists():
+        if user.groups.filter(name="moders").exists():
             return qs
         return qs.filter(owner=user)
 
@@ -62,11 +72,19 @@ class LessonsViewSet(viewsets.ModelViewSet):
         lesson.save()
 
     def get_permissions(self):
-        if self.action == 'create':
-            self.permission_classes = (IsAuthenticated, ~ModeratorPermissions,)
-        elif self.action in ['update', 'partial_update', 'retrieve']:
-            self.permission_classes = (IsAuthenticated, ModeratorPermissions | IsOwner,)
-        elif self.action == 'destroy':
-            self.permission_classes = (IsAuthenticated, IsOwner,)
+        if self.action == "create":
+            self.permission_classes = (
+                IsAuthenticated,
+                ~ModeratorPermissions,
+            )
+        elif self.action in ["update", "partial_update", "retrieve"]:
+            self.permission_classes = (
+                IsAuthenticated,
+                ModeratorPermissions | IsOwner,
+            )
+        elif self.action == "destroy":
+            self.permission_classes = (
+                IsAuthenticated,
+                IsOwner,
+            )
         return super().get_permissions()
-
